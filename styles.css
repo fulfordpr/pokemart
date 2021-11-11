@@ -8,6 +8,65 @@
 body{
     font-family:'VT323'
 }
+nav{
+    background-color:#FF0000;
+    height: 60px;
+    display:flex;
+    flex-direction: row;
+    
+}
+nav .container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    width: 90%;
+    height: 100%;
+    flex-wrap: nowrap;
+}
+#search{
+    width: 600px;
+    justify-self: flex-start;
+    align-items: center;
+}
+.searchBox{
+    height: 40px;
+    width: 400px;
+    margin: 8px 0px 8px 20px;
+    border: 2px #FFDE00 solid;
+    border-radius:10px;
+    padding: 0px 15px;
+    font-size:30px;
+}
+
+.searchBtn{
+    height: 35px;
+    width: 80px;
+    border: 2px #FFDE00 solid;
+    border-radius: 10px;
+    font-size:20px;
+    text-align: center;
+    background: none;
+    color:#FFDE00;
+    align-self: center;
+}
+
+#navLinks{
+    width: 500px;
+    justify-self: flex-end;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 36px;
+    align-items: center;
+}
+
+
+#navLinks a{
+    list-style: none;
+    text-decoration: none;
+    color:white;
+}
 
 .container{
     width: 90%;
