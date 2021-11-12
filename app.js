@@ -121,7 +121,7 @@ const renderPage = () =>{
         }
         card.appendChild(types);
 
-        let button = addToCart
+        let button = document.createElement('button')
         button.textContent = 'Add to Cart';
         button.classList.add('addToCartBtn');
         
