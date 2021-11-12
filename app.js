@@ -83,9 +83,18 @@ searchBtn.addEventListener('click', async () =>{
 
 const renderPage = () =>{
     items.innerHTML = '';
+    renderer.sort( compareId );
     for (i = 0; i < renderer.length; i++){
         const card = document.createElement('div');
         card.classList.add('card');
+
+        let sprite = document.createElement('img');
+        sprite.classList.add('sprite');
+        sprite.src = renderer[i].sprite;
+        card.appendChild(sprite);
+
+        let info = document.createElement('div');
+        info.classList.add('info');
 
         let namePlate = document.createElement('section');
         namePlate.classList.add('namePlate');
@@ -98,17 +107,7 @@ const renderPage = () =>{
         idPlate.classList.add('idPlate');
         idPlate.textContent = renderer[i].id;
         namePlate.appendChild(idPlate);
-        card.appendChild(namePlate);
-
-        let sprite = document.createElement('img');
-        sprite.classList.add('sprite');
-        sprite.src = renderer[i].sprite;
-        card.appendChild(sprite);
-
-        let price = document.createElement('h3');
-        price.classList.add('price')
-        price.textContent = renderer[i].price;
-        card.appendChild(price);
+        info.appendChild(namePlate);
 
         let typeList = renderer[i].types
         let types = document.createElement('ul');
@@ -119,59 +118,70 @@ const renderPage = () =>{
             type.textContent = `${typeList[i]}`;
             types.appendChild(type);
         }
-
         let type = typeList[0]
-        card.appendChild(types);
+        info.appendChild(types);
+
+        let price = document.createElement('h3');
+        price.classList.add('price')
+        price.textContent = renderer[i].price;
+        info.appendChild(price);
+
         if(type=='Normal'){
-            card.classList.add('normal-type');
+            sprite.classList.add('normal-type');
         } else if (type == 'Poison'){
-            card.classList.add('poison-type')
+            sprite.classList.add('poison-type')
         } else if (type == 'Electric'){
-            card.classList.add('electric-type')
+            sprite.classList.add('electric-type')
         } else if (type == 'Psychic'){
-            card.classList.add('psychic-type')
+            sprite.classList.add('psychic-type')
         } else if (type == 'Rock'){
-            card.classList.add('rock-type')
+            sprite.classList.add('rock-type')
         } else if (type == 'Steel'){
-            card.classList.add('steel-type')
+            sprite.classList.add('steel-type')
         } else if (type == 'Water'){
-            card.classList.add('water-type')
+            sprite.classList.add('water-type')
         } else if (type == 'Ice'){
-            card.classList.add('ice-type')
+            sprite.classList.add('ice-type')
         } else if (type == 'Ground'){
-            card.classList.add('ground-type')
+            sprite.classList.add('ground-type')
         } else if (type == 'Grass'){
-            card.classList.add('grass-type')
+            sprite.classList.add('grass-type')
         } else if (type == 'Ghost'){
-            card.classList.add('ghost-type')
+            sprite.classList.add('ghost-type')
         } else if (type == 'Flying'){
-            card.classList.add('flying-type')
+            sprite.classList.add('flying-type')
         } else if (type == 'Fire'){
-            card.classList.add('fire-type')
+            sprite.classList.add('fire-type')
         } else if (type == 'Bug'){
-            card.classList.add('bug-type')
+            sprite.classList.add('bug-type')
         } else if (type == 'Dark'){
-            card.classList.add('dark-type')
+            sprite.classList.add('dark-type')
         } else if (type == 'Fairy'){
-            card.classList.add('fairy-type')
+            sprite.classList.add('fairy-type')
         } else if (type == 'Fighting'){
-            card.classList.add('fighting-type')
+            sprite.classList.add('fighting-type')
         } else if (type == 'Dragon'){
-            card.classList.add('dragon-type')
+            sprite.classList.add('dragon-type')
         }
 
         let button = document.createElement('button')
         button.textContent = 'Add to Cart';
         button.classList.add('addToCartBtn');
         
-        card.appendChild(button);
-    
+        info.appendChild(button);
+        card.appendChild(info);
         items.appendChild(card)
     }   
 }
 
-// const sortById = (array) =>{
-//     for (let i = 0; i < array.length; i++){
-//         if(array[i+1].id > array[i].id)
-//     }
-// } 
+//TBH i'm not 100% sure how this works. I have an Idea but it doesn't make sense.
+const compareId= ( a, b ) =>{
+    if ( a.id < b.id ){
+      return -1;
+    }
+    if ( a.id > b.id ){
+      return 1;
+    }
+    return 0;
+  }
+  
