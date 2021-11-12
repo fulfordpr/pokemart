@@ -1,6 +1,7 @@
 const searchBox = document.querySelector('.searchBox')
 const searchBtn = document.querySelector('.searchBtn')
 const items = document.querySelector('.items')
+const addToCart = document.createElement('button');
 let renderer = [];
 let pokesearch = [];
 
@@ -26,18 +27,42 @@ const verifySearch = res =>{
 }
 
 //Pokemon factory function that
-const PokeFactory = (name, id, exp, height, sprite, types) =>{
+const PokeFactory = (name, id, exp, sprite, types) =>{
     let price = exp.toFixed(2) - .01
     price = `$${String(price)}`
     name = name[0].toUpperCase() + name.substring(1);
+    for(i in types){
+        types[i] = types[i][0].toUpperCase() + types[i].substring(1)
+    }
     return{
         name,
         id,
         exp,
-        height,
         sprite,
         types,
         price
+    }
+}
+
+//Takes verified search and makes pokemon via pokefactory function. Renders them to the page.
+const pullPokemon = ()=>{
+    for (let i = 0; i < pokesearch.length; i++) {
+        axios.get(`https://pokeapi.co/api/v2/pokemon/${pokesearch[i]}`)
+        .then(res => {
+            let name = res.data.name;
+            let id = res.data.id;
+            let exp = res.data.base_experience;
+            let sprite = res.data.sprites.front_default;
+            let types = []
+            for (i = 0; i < res.data.types.length; i ++){
+                console.log(res.data.types[i].type.name)
+                types.push(res.data.types[i].type.name)
+            }       
+            const newPoke = PokeFactory(name, id, exp, sprite, types);
+            renderer.push(newPoke);
+            // output to UI
+            renderPage();
+        })
     }
 }
 
@@ -51,30 +76,7 @@ searchBtn.addEventListener('click', async () =>{
     await axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=1118`)
     .then(res => {
         verifySearch(res)
-        for (let i = 0; i < pokesearch.length; i++) {
-            axios.get(`https://pokeapi.co/api/v2/pokemon/${pokesearch[i]}`)
-            .then(res => {
-                let name = res.data.name;
-                console.log(res.data.name);
-                let id = res.data.id;
-                console.log(res.data.id);
-                let exp = res.data.base_experience;
-                console.log(res.data.base_experience);
-                let height = res.data.height;
-                console.log(res.data.height)
-                let sprite = res.data.sprites.front_default;
-                console.log(res.data.sprites.front_default);
-                let types = []
-                for (i = 0; i < res.data.types.length; i ++){
-                    console.log(res.data.types[i].type.name)
-                    types.push(res.data.types[i].type.name)
-                }       
-                const newPoke = PokeFactory(name, id, exp, height, sprite, types);
-                renderer.push(newPoke);
-                // output to UI
-                renderPage();
-        })
-        }
+        pullPokemon();
     }) 
 })
 
@@ -108,11 +110,23 @@ const renderPage = () =>{
         price.textContent = renderer[i].price;
         card.appendChild(price);
 
-        let height = document.createElement('span');
-        height.classList.add('height')
-        height.textContent = `${renderer[i].height} Units Tall`;
-        card.appendChild(height);
+        let typeList = renderer[i].types
+        let types = document.createElement('ul');
+        types.classList.add('types')
 
+        for (let i = 0; i < typeList.length; i++) {
+            let type =  document.createElement('li');
+            type.textContent = `${typeList[i]}`;
+            types.appendChild(type);
+        }
+        card.appendChild(types);
+
+        let button = addToCart
+        button.textContent = 'Add to Cart';
+        button.classList.add('addToCartBtn');
+        
+        card.appendChild(button);
+    
         items.appendChild(card)
     }   
 }
