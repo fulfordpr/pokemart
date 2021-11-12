@@ -2,6 +2,87 @@
 @import url('https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hammersmith+One&family=Josefin+Sans:wght@700&display=swap');
 
+:root{
+    --normal-color: #C998A7;
+    --poison-color: #9C68D7;
+    --psychic-color: #A32A69;
+    --rock-color:#967B70;
+    --steel-color:#43BD94;
+    --water-color:#86A9FA;
+    --ice-color:#85D2F4;
+    --ground-color:#A66E2F;
+    --grass-color:#27CA50;
+    --ghost-color:#90678F;
+    --flying-color:#93B2C7;
+    --fire-color:#FD4C59;
+    --bug-color:#3B9950;
+    --dark-color:#5A5979;
+    --flying-color:#458A94;
+    --electric-color:#f3f334;
+    --fairy-color:#EA1369;
+    --fighting-color:#EF6138;
+    --dragon-color: #656d75;
+}
+/*************************Pokemon type classes*******************************/
+
+.normal-type{
+    background-image: linear-gradient(to top,rgb(177, 177, 177)0%,var(--normal-color)80%);
+}
+.poison-type{
+    background-image: linear-gradient(to top,rgb(116, 76, 153)0%,var(--poison-color)80%);
+}
+.electric-type{
+    background-image: linear-gradient(to top,rgb(231, 236, 156)0%,var(--electric-color)80%);
+}
+.psychic-type{
+    background-image: linear-gradient(to top,rgb(217, 156, 236)0%,var(--psychic-color)80%);
+}
+.rock-type{
+    background-image: linear-gradient(to top,rgb(164, 165, 152)0%,var(--rock-color)80%);
+}
+.steel-type{
+    background-image: linear-gradient(to top,rgb(129, 133, 143)0%,var(--steel-color)80%);
+}
+.water-type{
+    background-image: linear-gradient(to top,rgb(173, 233, 243)0%,var(--water-color)80%);
+}
+.ice-type{
+    background-image: linear-gradient(to top,rgb(246, 251, 255)0%,var(--ice-color)80%);
+}
+.ground-type{
+    background-image: linear-gradient(to top,rgb(236, 195, 156)0%,var(--ground-color)80%);
+}
+.grass-type{
+    background-image: linear-gradient(to top,rgb(168, 221, 171)0%,var(--grass-color)80%);
+}
+.ghost-type{
+    background-image: linear-gradient(to top,rgb(105, 115, 143)0%,var(--ghost-color)80%);
+}
+.flying-type{
+    background-image: linear-gradient(to top,rgb(177, 188, 219)0%,var(--flying-color)80%);
+}
+.fire-type{
+    background-image: linear-gradient(to top,rgb(238, 149, 114)0%,var(--fire-color)80%);
+}
+.bug-type{
+    background-image: linear-gradient(to top,rgb(105, 143, 111)0%,var(--bug-color)80%);
+}
+.dark-type{
+    background-image: linear-gradient(to top,rgb(226, 236, 169)0%,var(--dark-color)80%);
+}
+.fairy-type{
+    background-image: linear-gradient(to top,rgb(244, 217, 247)0%,var(--fairy-color)80%);
+}
+.ghost-type{
+    background-image: linear-gradient(to top,rgb(105, 115, 143)0%,var(--ghost-color)80%);
+}
+.fighting-type{
+    background-image: linear-gradient(to top,rgb(160, 120, 83)0%,var(--fighting-color)80%);
+}
+.dragon-type{
+    background-image: linear-gradient(to top,rgb(236, 72, 22)0%,var(--dragon-color)80%);
+}
+/****************************************************************************/
 *{
     margin: 0;
     padding: 0;
@@ -10,9 +91,10 @@
 body{
     font-family: 'Hammersmith One', sans-serif;
 }
+
 /* **********************Navigation***************************/
 nav{
-    background-color:#FF0000;
+    background-color:#3B4CCA;
     height: 60px;
     display:flex;
     flex-direction: row;
@@ -53,14 +135,14 @@ nav .container{
     background: none;
     color:#FFDE00;
     position: absolute;
-    top: 11px;
+    top: 9px;
     transition: all .2s ease-in-out;
 }
 
 .searchBtn:hover{
     background-color: #FFDE00;
     transform: scale(1.1);
-    color: #FF0000;
+    color: #3B4CCA;
 
 }
 
@@ -99,11 +181,11 @@ nav .container{
     text-align: center;
     width: 340px;
     height: 460px;
-    background-image: linear-gradient(#80ffdb, #48bfe3);
     border-radius: 20px;
     margin: 20px 10px;
     display: flex;
     flex-direction: column;
+    
 
 }
 
@@ -127,7 +209,7 @@ nav .container{
 }
 
 .price{
-    color:#6930c3;
+    color:white;
     font-size: 36px;
 }
 
@@ -148,4 +230,9 @@ nav .container{
     font-size:18px;
     background-image: linear-gradient(#00ff87, #60efff);
     border-radius:20px;
+    transition: all .2s ease-in-out;
+}
+
+.addToCartBtn:hover{
+    transform: scale(1.1);
 }

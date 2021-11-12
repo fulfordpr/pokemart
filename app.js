@@ -119,7 +119,46 @@ const renderPage = () =>{
             type.textContent = `${typeList[i]}`;
             types.appendChild(type);
         }
+
+        let type = typeList[0]
         card.appendChild(types);
+        if(type=='Normal'){
+            card.classList.add('normal-type');
+        } else if (type == 'Poison'){
+            card.classList.add('poison-type')
+        } else if (type == 'Electric'){
+            card.classList.add('electric-type')
+        } else if (type == 'Psychic'){
+            card.classList.add('psychic-type')
+        } else if (type == 'Rock'){
+            card.classList.add('rock-type')
+        } else if (type == 'Steel'){
+            card.classList.add('steel-type')
+        } else if (type == 'Water'){
+            card.classList.add('water-type')
+        } else if (type == 'Ice'){
+            card.classList.add('ice-type')
+        } else if (type == 'Ground'){
+            card.classList.add('ground-type')
+        } else if (type == 'Grass'){
+            card.classList.add('grass-type')
+        } else if (type == 'Ghost'){
+            card.classList.add('ghost-type')
+        } else if (type == 'Flying'){
+            card.classList.add('flying-type')
+        } else if (type == 'Fire'){
+            card.classList.add('fire-type')
+        } else if (type == 'Bug'){
+            card.classList.add('bug-type')
+        } else if (type == 'Dark'){
+            card.classList.add('dark-type')
+        } else if (type == 'Fairy'){
+            card.classList.add('fairy-type')
+        } else if (type == 'Fighting'){
+            card.classList.add('fighting-type')
+        } else if (type == 'Dragon'){
+            card.classList.add('dragon-type')
+        }
 
         let button = document.createElement('button')
         button.textContent = 'Add to Cart';
@@ -130,3 +169,9 @@ const renderPage = () =>{
         items.appendChild(card)
     }   
 }
+
+// const sortById = (array) =>{
+//     for (let i = 0; i < array.length; i++){
+//         if(array[i+1].id > array[i].id)
+//     }
+// } 
