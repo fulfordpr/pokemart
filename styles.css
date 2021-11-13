@@ -172,7 +172,7 @@ nav .container{
 
 .items{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 350px);
+    grid-template-columns: repeat(auto-fill, 320px);
     justify-content: space-evenly;
     margin-top: 30px;
 }
@@ -180,6 +180,7 @@ nav .container{
 .card{
     text-align: center;
     height: 420px;
+    width:300px;
     margin: 20px 10px;
     display: flex;
     flex-direction: column;
@@ -198,7 +199,7 @@ nav .container{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-size: 16px;
+    font-size: 15px;
     padding: 3px;
     margin: 3px 20px;
     letter-spacing: 3px;
@@ -220,7 +221,7 @@ nav .container{
 }
 .price{
     color:#3B4CCA;
-    font-size: 36px;
+    font-size: 24px;
 }
 
 .types li{

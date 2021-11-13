@@ -2,9 +2,19 @@ const searchBox = document.querySelector('.searchBox')
 const searchBtn = document.querySelector('.searchBtn')
 const items = document.querySelector('.items')
 const addToCart = document.createElement('button');
+const cart = [];
+const cartStorage = localStorage.setItem('cart', cart);
+
 let renderer = [];
 let pokesearch = [];
 
+
+
+const client = algoliasearch('YQC15N7NPS', '03979386171f871eed1f22ca29eb9442', {
+  hosts: [{ url: 'https://pokeapi.co/api/v2/pokemon/' }],
+});
+
+const index = client.initIndex('pokemart')
 
 //make sure the search matches a pokemon name
 const verifySearch = res =>{
@@ -20,8 +30,8 @@ const verifySearch = res =>{
         //if it's not in the list (or i gets above number of current pokemon)
         //stop the whole function
         if (i === 899 && pokesearch.length === 0){
-            alert('That Pokemon does not exist...Please try again.')
-            return
+            alert('That Pokemon does not exist...Please try again.');
+            return;
         }
     }  
 }
@@ -32,7 +42,7 @@ const PokeFactory = (name, id, exp, sprite, types) =>{
     price = `$${String(price)}`
     name = name[0].toUpperCase() + name.substring(1);
     for(i in types){
-        types[i] = types[i][0].toUpperCase() + types[i].substring(1)
+        types[i] = types[i][0].toUpperCase() + types[i].substring(1);
     }
     return{
         name,
@@ -55,7 +65,6 @@ const pullPokemon = ()=>{
             let sprite = res.data.sprites.front_default;
             let types = []
             for (i = 0; i < res.data.types.length; i ++){
-                console.log(res.data.types[i].type.name)
                 types.push(res.data.types[i].type.name)
             }       
             const newPoke = PokeFactory(name, id, exp, sprite, types);
@@ -79,7 +88,6 @@ searchBtn.addEventListener('click', async () =>{
         pullPokemon();
     }) 
 })
-
 
 const renderPage = () =>{
     items.innerHTML = '';
