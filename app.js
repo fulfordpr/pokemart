@@ -269,13 +269,13 @@ const renderPage = () =>{
 categorySelect.addEventListener('click', ()=> {
     if (categorySelect.dataset.value ==='items'){
         searchType.dataset.value = 'items';
-        searchType.src = "/img/potion.png"
-        categorySelect.src = "/img/poke-ball.png"
+        searchType.src = "./img/potion.png"
+        categorySelect.src = "./img/poke-ball.png"
         categorySelect.dataset.value = 'pokemon';
     } else if (categorySelect.dataset.value ==='pokemon'){
         searchType.dataset.value = 'pokemon';
-        searchType.src = "/img/poke-ball.png"
-        categorySelect.src = "/img/potion.png"
+        searchType.src = "./img/poke-ball.png"
+        categorySelect.src = "./img/potion.png"
         categorySelect.dataset.value = 'items';
     }
 
