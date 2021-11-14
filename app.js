@@ -2,13 +2,43 @@ const searchBox = document.querySelector('.searchBox')
 const searchBtn = document.querySelector('.searchBtn')
 const items = document.querySelector('.items')
 const addToCart = document.createElement('button');
-const cart = [];
-const cartStorage = localStorage.setItem('cart', cart);
 const categorySelect = document.querySelector('.changeCategory')
 const searchType = document.querySelector('.selectedSearch')
+
 let renderer = [];
 let pokesearch = [];
+let add = document.querySelectorAll('.addToCartBtn');
 
+function initUserData(){
+    if (localStorage.cart === undefined){
+        localStorage.setItem('cart', '[]');
+    }
+}
+
+const checkCart =() =>{
+    let cartCount = JSON.parse(localStorage.getItem('cart'))
+    let counter = document.querySelector('.cartCount');
+    if (cartCount.length > 0){
+        console.log(cartCount.length)
+        counter.textContent = cartCount.length;
+    }
+}
+window.onload = initUserData();
+window.onload = checkCart();
+
+const addToCartBtn = () =>{
+    add = document.querySelectorAll('.addToCartBtn');
+    for (i of add){
+        i.addEventListener('click', async function(){
+            let price = 0;
+            let name = this.parentElement.children[0].children[0].textContent; 
+            let newCartItem = CartFactory(name, price)
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            cart.push(newCartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));     
+        })
+    }
+}
 //make sure the search matches a pokemon name
 const verifySearch = res =>{
     if (searchBox.value == ''){
@@ -37,13 +67,15 @@ const PokeFactory = (name, id, exp, sprite, types) =>{
     for(i in types){
         types[i] = types[i][0].toUpperCase() + types[i].substring(1);
     }
+    category = 'pokemon'
     return{
         name,
         id,
         exp,
         sprite,
         types,
-        price
+        price,
+        category
     }
 }
 //same but for items
@@ -55,13 +87,14 @@ const ItemFactory = (name, cost, sprite, text) =>{
     } else {
         price = 'Free!'
     }
-    
+    category = 'item'
     name = name[0].toUpperCase() + name.substring(1);
     return{
         name,
         sprite,
         price,
-        text
+        text,
+        category
     }
 }
 
@@ -125,7 +158,6 @@ searchBtn.addEventListener('click', async () =>{
     }
     
 })
-
 
 //the BIG one that puts the search results on the page
 const renderPage = () =>{
@@ -231,7 +263,7 @@ const renderPage = () =>{
             sprite.src = renderer[i].sprite;
 
             let info = document.createElement('div');
-            info.classList.add('info');
+            info.classList.add('itemInfo');
 
             let namePlate = document.createElement('section');
             namePlate.classList.add('namePlate');
@@ -240,8 +272,10 @@ const renderPage = () =>{
             let name = document.createElement('h1')
             name.textContent = renderer[i].name;
             namePlate.appendChild(name);
+            info.appendChild(namePlate)
 
             let flavorText = document.createElement('p')
+            flavorText.classList.add('flavorText')
             flavorText.textContent = renderer[i].text;
             info.appendChild(flavorText)
 
@@ -256,13 +290,12 @@ const renderPage = () =>{
 
             info.appendChild(button);
             card.appendChild(sprite);
-            card.appendChild(namePlate)
             card.appendChild(info);
             items.appendChild(card)
         }
     }
     
-      
+      addToCartBtn();
 }
 
 //selecting between searching pokemon and items
@@ -278,8 +311,18 @@ categorySelect.addEventListener('click', ()=> {
         categorySelect.src = "./img/potion.png"
         categorySelect.dataset.value = 'items';
     }
-
 })
+
+//makes items for the cart
+const CartFactory = (name, price) =>{
+    return{
+        name,
+        price
+    }
+}
+
+
+
 
 //TBH i'm not 100% sure how this works. I have an Idea but it doesn't make sense.
 const compareId= ( a, b ) =>{
