@@ -4,6 +4,8 @@ const items = document.querySelector('.items')
 const addToCart = document.createElement('button');
 const categorySelect = document.querySelector('.changeCategory')
 const searchType = document.querySelector('.selectedSearch')
+const cartBtn = document.querySelector('.cartBtn');
+const mainContainer = document.querySelector('.main-container')
 
 let renderer = [];
 let pokesearch = [];
@@ -30,12 +32,31 @@ const addToCartBtn = () =>{
     add = document.querySelectorAll('.addToCartBtn');
     for (i of add){
         i.addEventListener('click', async function(){
-            let price = 0;
             let name = this.parentElement.children[0].children[0].textContent; 
-            let newCartItem = CartFactory(name, price)
+            let category = this.parentElement.parentElement.lastChild.textContent
+            let sprite = this.parentElement.parentElement.children[0].src;
+            const price = await axios.get(`https://pokeapi.co/api/v2/${category}/${name.toLowerCase()}`)
+                .then(res => {
+                    if(res.data.name === name.toLowerCase()){
+                        if (res.data.base_experience){
+                            return res.data.base_experience.toFixed(2) - .01
+                        } else if (res.data.cost){
+                            if (res.data.cost > 0){
+                                return res.data.cost.toFixed(2) - .01
+                            } else {
+                                return 0
+                            }
+                        }  else {
+                            return 0
+                        }
+                    }
+                })
+
+            let newCartItem = CartFactory(sprite, name, price)
             let cart = JSON.parse(localStorage.getItem("cart"));
             cart.push(newCartItem);
-            localStorage.setItem('cart', JSON.stringify(cart));     
+            localStorage.setItem('cart', JSON.stringify(cart));
+            checkCart();     
         })
     }
 }
@@ -162,6 +183,7 @@ searchBtn.addEventListener('click', async () =>{
 //the BIG one that puts the search results on the page
 const renderPage = () =>{
     items.innerHTML = '';
+    items.style.display = 'grid';
     if (searchType.dataset.value === 'pokemon'){
         renderer.sort( compareId );
         for (i = 0; i < renderer.length; i++){
@@ -247,9 +269,14 @@ const renderPage = () =>{
             let button = document.createElement('button')
             button.textContent = 'Add to Cart';
             button.classList.add('addToCartBtn');
+
+            let category = document.createElement('span')
+            category.textContent = renderer[i].category
+            category.style.display = 'none';
             
             info.appendChild(button);
             card.appendChild(info);
+            card.appendChild(category)
             items.appendChild(card)
         } 
     } else if (searchType.dataset.value === 'items'){
@@ -288,9 +315,14 @@ const renderPage = () =>{
             button.textContent = 'Add to Cart';
             button.classList.add('addToCartBtn');
 
+            let category = document.createElement('span')
+            category.textContent = renderer[i].category
+            category.style.display = 'none';
+
             info.appendChild(button);
             card.appendChild(sprite);
             card.appendChild(info);
+            card.appendChild(category)
             items.appendChild(card)
         }
     }
@@ -314,15 +346,13 @@ categorySelect.addEventListener('click', ()=> {
 })
 
 //makes items for the cart
-const CartFactory = (name, price) =>{
+const CartFactory = (sprite, name, price) =>{
     return{
+        sprite,
         name,
         price
     }
 }
-
-
-
 
 //TBH i'm not 100% sure how this works. I have an Idea but it doesn't make sense.
 const compareId= ( a, b ) =>{
@@ -334,3 +364,93 @@ const compareId= ( a, b ) =>{
     }
     return 0;
 }
+
+//pushes cart to the dom... still needs some tweeking
+const renderCart = () =>{
+    items.innerHTML = ''
+    items.style.display = 'flex';
+    items.style.flexDirection = 'column';
+    let total = 0;
+    let title = document.createElement('h1')
+    title.textContent = `You currently have ${renderer.length} Items in your cart!`
+    items.appendChild(title)
+    for (i = 0; i < renderer.length; i++){
+        let sprite = renderer[i].sprite
+        let name = renderer[i].name;
+        let price = renderer[i].price;
+        total += renderer[i].price
+
+
+        let cartItem = document.createElement('div')
+        cartItem.classList.add('cartItem')
+
+        let itemMain = document.createElement('div')
+        cartItem.appendChild(itemMain)
+        itemMain.classList.add('item-main')
+
+        let cartImg = document.createElement('img')
+        cartImg.src = sprite
+
+        let printName = document.createElement('span')
+        printName.textContent = name;
+        cartItem.appendChild(printName)
+
+        let printPrice = document.createElement('span')
+        if (price > 0){
+            printPrice.textContent = `$${price}`
+        } else {
+            printPrice.textContent = 'FREE!'
+        }
+
+        let removeItem = document.createElement('span')
+        removeItem.classList.add('remove-from-cart')
+        removeItem.textContent = '- Remove'
+
+
+        itemMain.appendChild(cartImg)
+        itemMain.appendChild(printName)
+        itemMain.appendChild(removeItem)
+        cartItem.appendChild(printPrice)
+        items.appendChild(cartItem)
+
+
+        //removes multiple items sometimes. will figure it out later.
+        removeItem.addEventListener('click', ()=>{
+            let cart = JSON.parse(localStorage.getItem("cart"));
+            for (i = 0; i < cart.length; i++){
+                console.log(cart[i].name)
+                if (name === cart[i].name){
+                    console.log(cart[i].name)
+                    cart.splice(i)
+                    checkCart()
+                    break 
+                }
+            }
+            localStorage.setItem('cart',JSON.stringify(cart))
+            checkCart() 
+           
+        })
+    }
+
+    let summary = document.createElement('div');
+    summary.classList.add('order-summary')
+    summary.textContent = `Total: $${total.toFixed(2)}`
+
+    let checkOutBtn = document.createElement('button')
+    checkOutBtn.classList.add('checkoutBtn')
+    checkOutBtn.textContent = 'Checkout'
+    items.appendChild(summary);
+    summary.appendChild(checkOutBtn);
+
+
+}
+
+
+cartBtn.addEventListener('click', () =>{
+    renderer = [];
+    const cartContent = JSON.parse(localStorage.getItem('cart'));
+    for (i = 0; i < cartContent.length; i++){
+        renderer.push(cartContent[i]);   
+    }
+    renderCart();
+})

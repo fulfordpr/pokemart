@@ -212,19 +212,18 @@ nav .container{
 }
 
 
-#navLinks a{
-    list-style: none;
-    text-decoration: none;
+#navLinks span{
     color:#FFDE00;
     width: 50px;
 }
 
 .cartCount{
     font-size: 18px;
-    color:#3B4CCA;
+    color:#3B4CCA !important;
     position: relative;
-    left: -31px;
+    left: -23px;
     top:-8px;
+    pointer-events: none;
 }
 
 /****************************Iems/Content************************************/
@@ -311,6 +310,7 @@ nav .container{
 
 .addToCartBtn:hover{
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 img.itemSprite{
@@ -331,4 +331,87 @@ img.itemSprite{
 .itemCard{
     height: 400px;
     width: 250px;
+}
+
+/**********************CART ITEMS************************************/
+.main-container{
+ width:100%;
+ text-align: center;
+}
+.cartItem{
+    width: 600px;
+    margin: auto;
+    border: 1px rgb(213, 208, 208) solid;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+
+.cartItem span{
+    margin: 30px 5px auto 0px;
+}
+
+.cartItem img{
+    height: 80px;
+}
+
+.order-summary{
+    width:600px;
+    margin: auto;
+    font-size: 28px;
+    color:#3B4CCA;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+}
+.remove-from-cart{
+    color: #93B2C7;
+    font-size: 12px;
+    border: 1px gray solid;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: 34px !important;
+    line-height: 11px;
+    text-align:center;
+    transition: all .2s ease-in-out;
+    overflow: hidden;
+    
+}
+
+.remove-from-cart:hover{
+    border:1px #3B4CCA solid;
+    color:#3B4CCA;
+    font-size: 14px;
+    transform: scale(1.1);
+    width:100px;
+    border-radius: 10px;
+    padding: 1px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.item-main{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 60%;
+}
+
+.checkoutBtn{
+    width: 200px;
+    margin: 10px 0px auto auto;
+    height: 40px;
+    background-color: #3B4CCA;
+    color: #FFDE00;
+    font-size: 28px;
+    border: none;
+    border-radius: 20px;
+    transition: all .2s ease-in-out;
+}
+.checkoutBtn:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    border: 2px #FFDE00 solid;
 }
