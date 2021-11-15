@@ -10,6 +10,7 @@ const mainContainer = document.querySelector('.main-container')
 let renderer = [];
 let pokesearch = [];
 let add = document.querySelectorAll('.addToCartBtn');
+let removeBtn;
 
 function initUserData(){
     if (localStorage.cart === undefined){
@@ -367,6 +368,11 @@ const compareId= ( a, b ) =>{
 
 //pushes cart to the dom... still needs some tweeking
 const renderCart = () =>{
+    renderer = [];
+    const cartContent = JSON.parse(localStorage.getItem('cart'));
+    for (i = 0; i < cartContent.length; i++){
+        renderer.push(cartContent[i]);   
+    }
     items.innerHTML = ''
     items.style.display = 'flex';
     items.style.flexDirection = 'column';
@@ -403,33 +409,19 @@ const renderCart = () =>{
         }
 
         let removeItem = document.createElement('span')
+        removeItem.dataset.count = i;
         removeItem.classList.add('remove-from-cart')
         removeItem.textContent = '- Remove'
-
+        
+        removeItem.addEventListener('click', deleteItem);
 
         itemMain.appendChild(cartImg)
         itemMain.appendChild(printName)
         itemMain.appendChild(removeItem)
         cartItem.appendChild(printPrice)
         items.appendChild(cartItem)
+        
 
-
-        //removes multiple items sometimes. will figure it out later.
-        removeItem.addEventListener('click', ()=>{
-            let cart = JSON.parse(localStorage.getItem("cart"));
-            for (i = 0; i < cart.length; i++){
-                console.log(cart[i].name)
-                if (name === cart[i].name){
-                    console.log(cart[i].name)
-                    cart.splice(i)
-                    checkCart()
-                    break 
-                }
-            }
-            localStorage.setItem('cart',JSON.stringify(cart))
-            checkCart() 
-           
-        })
     }
 
     let summary = document.createElement('div');
@@ -442,15 +434,20 @@ const renderCart = () =>{
     items.appendChild(summary);
     summary.appendChild(checkOutBtn);
 
-
+    
 }
 
-
 cartBtn.addEventListener('click', () =>{
-    renderer = [];
-    const cartContent = JSON.parse(localStorage.getItem('cart'));
-    for (i = 0; i < cartContent.length; i++){
-        renderer.push(cartContent[i]);   
-    }
     renderCart();
 })
+
+
+
+function deleteItem(e){
+    let cart = JSON.parse(localStorage.getItem("cart"));
+    let index = e.target.dataset.count
+    cart.splice(index, 1);
+    localStorage.setItem('cart',JSON.stringify(cart))
+    renderCart();
+    checkCart();
+}
