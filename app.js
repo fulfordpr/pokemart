@@ -11,6 +11,7 @@ let renderer = [];
 let pokesearch = [];
 let add = document.querySelectorAll('.addToCartBtn');
 let removeBtn;
+let page;
 
 function initUserData(){
     if (localStorage.cart === undefined){
@@ -136,8 +137,11 @@ const pullPokemon = ()=>{
             const newPoke = PokeFactory(name, id, exp, sprite, types);
             renderer.push(newPoke);
             // output to UI
-            renderPage();
+            if(renderer.length == pokesearch.length){
+                renderPage();
+            }
         })
+
     }
 }
 
@@ -158,8 +162,7 @@ const pullItems = ()=>{
     }
 }
 
-//search box Functionality - click listener
-searchBtn.addEventListener('click', async () =>{
+const search = async()=>{
     //reset the rendered output
     renderer = [];
     //init the search term variable
@@ -170,6 +173,7 @@ searchBtn.addEventListener('click', async () =>{
         .then(res => {
             verifySearch(res)
             pullPokemon();
+            console.log(renderer)
         }) 
     } else if (searchType.dataset.value === 'items'){
         await axios.get(`https://pokeapi.co/api/v2/item/?limit=954`)
@@ -178,13 +182,20 @@ searchBtn.addEventListener('click', async () =>{
             pullItems();
         }) 
     }
-    
+}
+//search box Functionality - click listener
+searchBtn.addEventListener('click', search)
+searchBox.addEventListener('keypress', (e)=> {
+    if (e.key === 'Enter'){
+        search();
+    }
 })
 
 //the BIG one that puts the search results on the page
 const renderPage = () =>{
+    console.log(renderer)
     items.innerHTML = '';
-    items.style.display = 'grid';
+    page = 1
     if (searchType.dataset.value === 'pokemon'){
         renderer.sort( compareId );
         for (i = 0; i < renderer.length; i++){
@@ -274,7 +285,7 @@ const renderPage = () =>{
             let category = document.createElement('span')
             category.textContent = renderer[i].category
             category.style.display = 'none';
-            
+
             info.appendChild(button);
             card.appendChild(info);
             card.appendChild(category)
@@ -325,10 +336,11 @@ const renderPage = () =>{
             card.appendChild(info);
             card.appendChild(category)
             items.appendChild(card)
+            
         }
     }
-    
-      addToCartBtn();
+    items.style.display = 'grid';
+    addToCartBtn();
 }
 
 //selecting between searching pokemon and items
@@ -338,11 +350,13 @@ categorySelect.addEventListener('click', ()=> {
         searchType.src = "./img/potion.png"
         categorySelect.src = "./img/poke-ball.png"
         categorySelect.dataset.value = 'pokemon';
+        searchBox.placeholder ="< Item Search..."
     } else if (categorySelect.dataset.value ==='pokemon'){
         searchType.dataset.value = 'pokemon';
         searchType.src = "./img/poke-ball.png"
         categorySelect.src = "./img/potion.png"
         categorySelect.dataset.value = 'items';
+        searchBox.placeholder = "< Poke Search..."
     }
 })
 

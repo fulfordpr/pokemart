@@ -170,6 +170,7 @@ nav .container{
     vertical-align: middle;
 
 }
+
 .searchBox{
     height: 40px;
     width: 400px;
@@ -233,10 +234,12 @@ nav .container{
 }
 
 .items{
+
     display: grid;
     grid-template-columns: repeat(auto-fill, 345px);
     justify-content: space-evenly;
     margin-top: 30px;
+    
 }
 
 .card{
